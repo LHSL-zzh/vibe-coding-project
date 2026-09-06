@@ -1,0 +1,459 @@
+/* style.css — 周易起卦：古籍宣纸风 */
+:root {
+  --paper: #f6efe0;
+  --paper-deep: #efe4cd;
+  --ink: #2f2a24;
+  --ink-soft: #6b6152;
+  --cinnabar: #a63a2b;      /* 朱砂 */
+  --cinnabar-soft: #c96a50;
+  --gold: #8a6d2f;
+  --line: #d8c9a8;
+  --shadow: 0 2px 10px rgba(90, 70, 40, .12);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background:
+    radial-gradient(ellipse at 50% 0%, #fbf6ea 0%, var(--paper) 55%, #efe6d2 100%);
+  color: var(--ink);
+  font-family: "Noto Serif SC", "Songti SC", "SimSun", "STSong", serif;
+  line-height: 1.75;
+}
+
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 18px 60px;
+}
+
+.hidden { display: none !important; }
+
+/* ---------- 头部 ---------- */
+.site-head { text-align: center; margin-bottom: 26px; }
+.site-head h1 {
+  font-size: 2.4rem;
+  letter-spacing: .5em;
+  margin: 0 0 2px;
+  color: var(--cinnabar);
+  text-indent: .5em;
+  font-weight: 700;
+}
+.site-head .sub {
+  margin: 6px 0 0;
+  color: var(--ink-soft);
+  font-size: .92rem;
+  letter-spacing: .25em;
+}
+
+/* ---------- 数据加载失败提示 ---------- */
+.load-error {
+  background: #fdf0e6;
+  border: 1px solid #e0b394;
+  color: #8a4a2a;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: .9rem;
+  margin-bottom: 16px;
+}
+.load-error code {
+  background: rgba(166, 58, 43, .08);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: .85em;
+}
+
+/* ---------- 控制区 ---------- */
+.control {
+  text-align: center;
+  margin: 10px 0 18px;
+}
+
+/* 起卦方式切换（胶囊分段控件） */
+.mode-switch {
+  display: inline-flex;
+  background: rgba(216, 201, 168, .35);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 3px;
+  margin-bottom: 12px;
+  gap: 2px;
+}
+.mode-opt { position: relative; }
+.mode-opt input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.mode-opt span {
+  display: inline-block;
+  padding: 5px 18px;
+  border-radius: 999px;
+  font-size: .9rem;
+  color: var(--ink-soft);
+  cursor: pointer;
+  letter-spacing: .15em;
+  transition: background .18s, color .18s;
+  user-select: none;
+}
+.mode-opt input:checked + span {
+  background: linear-gradient(180deg, var(--cinnabar-soft), var(--cinnabar));
+  color: #fbf6ea;
+  box-shadow: var(--shadow);
+}
+.mode-opt input:disabled + span { opacity: .5; cursor: not-allowed; }
+.mode-hint {
+  margin: -2px 0 14px;
+  color: var(--ink-soft);
+  font-size: .85rem;
+  min-height: 1.4em;
+  letter-spacing: .05em;
+}
+
+.btn-cast {
+  font-family: inherit;
+  font-size: 1.25rem;
+  letter-spacing: .6em;
+  text-indent: .6em;
+  color: #fbf6ea;
+  background: linear-gradient(180deg, var(--cinnabar-soft), var(--cinnabar));
+  border: none;
+  border-radius: 999px;
+  padding: 12px 44px;
+  cursor: pointer;
+  box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,.25);
+  transition: transform .12s, box-shadow .12s;
+}
+.btn-cast:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(166,58,43,.35); }
+.btn-cast:active { transform: translateY(1px); }
+.btn-cast:disabled { opacity: .55; cursor: wait; transform: none; }
+.cast-status {
+  min-height: 1.6em;
+  margin: 12px 0 0;
+  color: var(--ink-soft);
+  font-size: .95rem;
+  letter-spacing: .1em;
+}
+
+/* ---------- 手动掷币面板 ---------- */
+.manual-panel {
+  margin: 2px 0 16px;
+  padding: 16px 18px;
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+  background: rgba(255, 253, 247, .55);
+  text-align: center;
+}
+.manual-title { margin: 0 0 12px; font-size: 1.02rem; }
+.manual-title b { color: var(--cinnabar); font-size: 1.15rem; }
+.manual-coins {
+  display: flex;
+  justify-content: center;
+  gap: 26px;
+  flex-wrap: wrap;
+}
+.manual-coin {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-family: inherit;
+}
+.manual-coin:disabled { cursor: default; }
+.manual-coin .mc-label {
+  font-size: .82rem;
+  color: var(--ink-soft);
+  letter-spacing: .08em;
+  min-height: 1.4em;
+}
+.manual-coin .mc-label .side { color: var(--cinnabar); font-weight: 700; }
+.manual-coin.unset .coin3d { opacity: .55; }
+.manual-coin.unset .coin3d .face { filter: saturate(.55); }
+.manual-coin.unset .mc-label .side { color: #a99a78; }
+.manual-actions { margin-top: 12px; }
+.btn-ghost {
+  font-family: inherit;
+  font-size: .82rem;
+  letter-spacing: .15em;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 16px;
+  cursor: pointer;
+  transition: color .15s, border-color .15s;
+}
+.btn-ghost:hover { color: var(--cinnabar); border-color: var(--cinnabar-soft); }
+.manual-result {
+  min-height: 1.6em;
+  margin: 10px 0 0;
+  color: var(--cinnabar);
+  font-weight: 700;
+  letter-spacing: .12em;
+}
+.manual-result.done { color: var(--ink); font-weight: 400; }
+
+/* ---------- 揭晓区 ---------- */
+.stage { margin: 6px 0 18px; }
+.coin-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  min-height: 60px;
+}
+.line-reveal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  animation: rise .45s ease-out;
+}
+.line-tag {
+  margin-left: 10px;
+  font-size: .92rem;
+  color: var(--ink-soft);
+  letter-spacing: .06em;
+  white-space: nowrap;
+}
+.line-tag .tag-moving { color: var(--cinnabar); font-weight: 700; }
+
+/* ---------- 3D 硬币 ---------- */
+.coin3d {
+  width: 42px;
+  height: 42px;
+  perspective: 180px;
+  flex: none;
+}
+.coin-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+/* 揭晓动画：正面(字)落定 vs 背面(背)落定 —— 动画终点差半圈(180°) */
+.coin3d.flip .coin-inner { animation: flip-front .8s cubic-bezier(.25, .6, .3, 1) both; }
+.coin3d.flip.show-back .coin-inner { animation-name: flip-back; }
+/* 手动点选翻转（无旋转动画，走 transition） */
+.manual-coin .coin-inner { transition: transform .45s cubic-bezier(.3, .7, .3, 1); }
+.manual-coin.show-back .coin-inner { transform: rotateY(180deg); }
+@keyframes flip-front {
+  0%   { transform: rotateY(0deg) translateY(-18px); opacity: 0; }
+  60%  { opacity: 1; }
+  100% { transform: rotateY(1080deg) translateY(0); opacity: 1; }
+}
+@keyframes flip-back {
+  0%   { transform: rotateY(0deg) translateY(-18px); opacity: 0; }
+  60%  { opacity: 1; }
+  100% { transform: rotateY(900deg) translateY(0); opacity: 1; }
+}
+.face {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.02rem;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.face.front {
+  background: radial-gradient(circle at 35% 30%, #f9ecc0, #dcb963 65%, #bd9644);
+  border: 2px solid #a07d33;
+  color: #5c4313;
+  box-shadow: inset 0 0 0 3px rgba(122, 90, 30, .18);
+}
+.face.back {
+  background: radial-gradient(circle at 35% 30%, #d3ae62, #a07d33 65%, #77591f);
+  border: 2px solid #6b5222;
+  color: #f6ecd0;
+  transform: rotateY(180deg);
+  box-shadow: inset 0 0 0 3px rgba(60, 40, 10, .25);
+}
+.face.front::after, .face.back::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  opacity: .45;
+}
+
+/* ---------- 结果卡片 ---------- */
+.result { margin: 8px 0 26px; }
+.card {
+  background: rgba(255, 253, 247, .75);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 20px 22px;
+  margin-bottom: 18px;
+  box-shadow: var(--shadow);
+  animation: rise .5s ease-out;
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-bottom: 1px dashed var(--line);
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+}
+
+/* 卦画（爻） */
+.hex-figure { display: flex; flex-direction: column; gap: 7px; flex: none; }
+.hex-line { display: flex; justify-content: space-between; gap: 6px; position: relative; }
+.hex-line .bar {
+  display: block;
+  height: 7px;
+  background: var(--ink);
+  border-radius: 2px;
+}
+.hex-line.yang .bar { width: 74px; }
+.hex-line.yin .bar { width: 33px; }
+.hex-line.moving .bar { background: var(--cinnabar); }
+.hex-line .move-mark {
+  position: absolute;
+  right: -20px;
+  top: -4px;
+  font-size: .85rem;
+  color: var(--cinnabar);
+  font-weight: 700;
+}
+
+.titles .tag {
+  display: inline-block;
+  font-size: .72rem;
+  letter-spacing: .3em;
+  color: var(--cinnabar);
+  border: 1px solid var(--cinnabar-soft);
+  border-radius: 4px;
+  padding: 0 8px;
+  margin-bottom: 6px;
+}
+.tag-var { color: var(--gold); border-color: var(--gold); }
+.hex-name {
+  font-size: 1.9rem;
+  margin: 0;
+  letter-spacing: .08em;
+  color: var(--ink);
+}
+.hex-meta { margin: 4px 0 0; color: var(--ink-soft); font-size: .9rem; }
+
+/* 二期插图占位槽 */
+.ill-slot {
+  margin: 0 0 16px;
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  background: rgba(239, 228, 205, .35);
+  min-height: 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+.ill-placeholder { color: #a99a78; font-size: .9rem; letter-spacing: .2em; }
+.ill-caption { color: var(--ink-soft); font-size: .8rem; margin-top: 4px; }
+
+/* 文本块 */
+.text-block { margin: 14px 0; }
+.block-title {
+  font-size: .95rem;
+  color: var(--cinnabar);
+  letter-spacing: .3em;
+  border-left: 3px solid var(--cinnabar);
+  padding-left: 8px;
+  margin: 0 0 8px;
+}
+.block-title .hint { color: var(--ink-soft); font-weight: 400; letter-spacing: .05em; font-size: .78rem; }
+.guaci { margin: 0; font-size: 1.05rem; }
+.xiang { margin: 6px 0 0; color: var(--ink-soft); font-size: .9rem; }
+
+.yaoci-list { margin: 0; padding-left: 1.4em; }
+.yaoci-list li { margin: 6px 0; font-size: .98rem; }
+.yaoci-list li .y-name { color: var(--ink-soft); font-weight: 700; margin-right: 4px; }
+.yaoci-list li.moving { color: var(--cinnabar); }
+.yaoci-list li.moving .y-name { color: var(--cinnabar); }
+.yaoci-list .y-mark { font-weight: 700; margin-left: 4px; }
+
+.var-note {
+  margin: 10px 0 0;
+  font-size: .88rem;
+  color: var(--ink-soft);
+  background: rgba(138, 109, 47, .08);
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+
+/* ---------- 历史记录 ---------- */
+.history { margin-top: 10px; }
+.sec-title {
+  font-size: 1.05rem;
+  color: var(--gold);
+  letter-spacing: .3em;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 6px;
+}
+.history-list { list-style: none; margin: 12px 0 0; padding: 0; }
+.history-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background .15s;
+}
+.history-list li:hover { background: rgba(216, 201, 168, .25); }
+.history-list .h-mini {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: none;
+}
+.history-list .h-mini i { display: block; height: 3px; background: var(--ink); border-radius: 1px; width: 26px; }
+.history-list .h-mini i.yin { width: 12px; }
+.history-list .h-mini i.mov { background: var(--cinnabar); }
+.history-list .h-main { flex: 1; }
+.history-list .h-name { font-weight: 700; }
+.history-list .h-time { color: var(--ink-soft); font-size: .78rem; }
+.history-empty { color: #b3a68c; font-size: .9rem; margin: 10px 0; }
+
+/* ---------- 页脚 ---------- */
+.site-foot {
+  margin-top: 34px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: .8rem;
+}
+.site-foot code {
+  font-family: "SFMono-Regular", Consolas, monospace;
+  background: rgba(216, 201, 168, .3);
+  padding: 0 4px;
+  border-radius: 3px;
+}
+
+/* ---------- 窄屏 ---------- */
+@media (max-width: 480px) {
+  .page { padding: 20px 12px 48px; }
+  .card { padding: 16px 14px; }
+  .hex-line.yang .bar { width: 60px; }
+  .hex-line.yin .bar { width: 27px; }
+  .hex-name { font-size: 1.6rem; }
+  .manual-coins { gap: 12px; }
+  .line-tag { margin-left: 4px; font-size: .84rem; }
+}

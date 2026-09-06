@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>vibe-coding-project · 作品集</title>
+<style>
+  :root { --paper:#f6efe0; --ink:#2f2a24; --ink-soft:#6b6152; --cinnabar:#a63a2b; --line:#d8c9a8; }
+  * { box-sizing:border-box; }
+  body {
+    margin:0; min-height:100vh;
+    background: radial-gradient(ellipse at 50% 0%, #fbf6ea 0%, var(--paper) 55%, #efe6d2 100%);
+    color: var(--ink);
+    font-family: "Noto Serif SC","Songti SC","SimSun",serif;
+    display:flex; align-items:center; justify-content:center; padding: 40px 16px;
+  }
+  .wrap { max-width: 640px; width:100%; text-align:center; }
+  h1 { font-size: 2rem; letter-spacing:.18em; color: var(--cinnabar); margin:0 0 6px; }
+  .sub { color:var(--ink-soft); letter-spacing:.2em; margin:0 0 30px; font-size:.95rem; }
+  .grid { display:grid; gap:14px; text-align:left; }
+  .card {
+    display:block; text-decoration:none; color:var(--ink);
+    background: rgba(255,253,247,.8); border:1px solid var(--line); border-radius:12px;
+    padding:18px 20px; box-shadow:0 2px 10px rgba(90,70,40,.1); transition: transform .15s, box-shadow .15s;
+  }
+  .card:hover { transform: translateY(-2px); box-shadow:0 6px 18px rgba(90,70,40,.18); }
+  .card .name { font-size:1.25rem; font-weight:700; letter-spacing:.1em; }
+  .card .name .go { color:var(--cinnabar); margin-left:6px; }
+  .card .desc { color:var(--ink-soft); font-size:.9rem; margin:4px 0 0; }
+  .badge {
+    display:inline-block; font-size:.72rem; letter-spacing:.12em; border-radius:999px; padding:1px 10px;
+    margin-left:8px; vertical-align:middle;
+  }
+  .badge.on { color:#14532d; background:#dcfce7; border:1px solid #86efac; }
+  .badge.wip { color:#78350f; background:#fef3c7; border:1px solid #fcd34d; }
+  footer { margin-top:30px; color:var(--ink-soft); font-size:.8rem; letter-spacing:.1em; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>vibe-coding-project</h1>
+  <p class="sub">vibe coding 小作品集</p>
+
+  <div class="grid">
+    <a class="card" href="zhouyi-app/">
+      <span class="name">周易起卦<span class="go">→</span><span class="badge on">在线可用</span></span>
+      <p class="desc">三枚硬币法六爻占筮：自动模拟 / 手动掷币，本卦·变卦排盘，64 卦辞 + 384 爻辞。</p>
+    </a>
+    <a class="card" href="fitness-pose-quality/">
+      <span class="name">健身动作质量评估<span class="go">→</span><span class="badge wip">规划中</span></span>
+      <p class="desc">人体关键点检测 + 规则几何引擎的健身动作质量评估（深蹲 / 俯卧撑 / 弯举）。</p>
+    </a>
+  </div>
+
+  <footer>vibe-coding-project · 各项目详见仓库内 README 与开发流程单</footer>
+</div>
+</body>
+</html>

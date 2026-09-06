@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>周易起卦 · 六爻占筮</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="page">
+
+  <header class="site-head">
+    <h1>周易起卦</h1>
+    <p class="sub">三枚硬币法 · 六爻排盘 · 本卦变卦</p>
+  </header>
+
+  <div id="load-error" class="load-error hidden">
+    ⚠ 无法加载 data/guaci.json —— 直接双击打开时浏览器禁止 fetch 本地文件。<br>
+    请用本地静态服务器打开，例如 <code>python3 -m http.server 8000</code> 后访问
+    <code>http://localhost:8000/</code>，或部署到 GitHub Pages。
+  </div>
+
+  <section class="control" aria-label="起卦操作">
+    <!-- 起卦方式切换：自动模拟 / 手动掷币 -->
+    <div class="mode-switch" role="radiogroup" aria-label="起卦方式">
+      <label class="mode-opt">
+        <input type="radio" name="mode" value="auto" id="mode-auto" checked>
+        <span>自动模拟</span>
+      </label>
+      <label class="mode-opt">
+        <input type="radio" name="mode" value="manual" id="mode-manual">
+        <span>手动掷币</span>
+      </label>
+    </div>
+    <p class="mode-hint" id="mode-hint"></p>
+
+    <button id="btn-cast" class="btn-cast" type="button">起 卦</button>
+    <p id="cast-status" class="cast-status" aria-live="polite"></p>
+  </section>
+
+  <!-- 手动掷币面板：逐爻点选三枚硬币正反 -->
+  <section id="manual-panel" class="manual-panel" aria-label="手动掷币" hidden>
+    <p class="manual-title">
+      第 <b id="manual-line-no">1</b> 爻（<span id="manual-line-name">初爻</span>）
+      · 请掷三枚硬币，点选每枚的朝上面
+    </p>
+    <div class="manual-coins" id="manual-coins"><!-- 3 枚点选币由 JS 注入 --></div>
+    <div class="manual-actions">
+      <button id="manual-reset" class="btn-ghost" type="button">重选本爻</button>
+    </div>
+    <p class="manual-result" id="manual-result" aria-live="polite"></p>
+  </section>
+
+  <!-- 揭晓区：每爻三枚硬币 + 爻名，自下而上逐爻生成 -->
+  <section id="stage" class="stage" aria-label="起卦过程" hidden>
+    <div class="coin-row" id="coin-row"></div>
+  </section>
+
+  <!-- 结果区 -->
+  <section id="result" class="result" aria-label="卦象结果" hidden>
+
+    <article class="card" id="card-main">
+      <div class="card-head">
+        <div class="hex-figure" id="fig-main" aria-label="本卦卦画"></div>
+        <div class="titles">
+          <div class="tag">本卦</div>
+          <h2 class="hex-name" id="name-main"></h2>
+          <p class="hex-meta" id="meta-main"></p>
+        </div>
+      </div>
+      <!-- 二期：卦辞古籍线画（M9）在此容器渲染 -->
+      <figure class="ill-slot" id="ill-main" data-ill-for="main" hidden>
+        <div class="ill-placeholder">▧ 古籍线画（二期规划 M9）</div>
+        <figcaption class="ill-caption" id="ill-cap-main"></figcaption>
+      </figure>
+      <div class="text-block">
+        <h3 class="block-title">卦辞</h3>
+        <p class="guaci" id="guaci-main"></p>
+        <p class="xiang" id="xiang-main"></p>
+      </div>
+      <div class="text-block">
+        <h3 class="block-title">爻辞 <span class="hint">（● ○ 为动爻）</span></h3>
+        <ol class="yaoci-list" id="yaoci-main"></ol>
+      </div>
+    </article>
+
+    <article class="card card-var" id="card-var" hidden>
+      <div class="card-head">
+        <div class="hex-figure" id="fig-var" aria-label="变卦卦画"></div>
+        <div class="titles">
+          <div class="tag tag-var">变卦</div>
+          <h2 class="hex-name" id="name-var"></h2>
+          <p class="hex-meta" id="meta-var"></p>
+        </div>
+      </div>
+      <figure class="ill-slot" id="ill-var" data-ill-for="var" hidden>
+        <div class="ill-placeholder">▧ 古籍线画（二期规划 M9）</div>
+        <figcaption class="ill-caption" id="ill-cap-var"></figcaption>
+      </figure>
+      <div class="text-block">
+        <h3 class="block-title">变卦卦辞</h3>
+        <p class="guaci" id="guaci-var"></p>
+      </div>
+      <p class="var-note" id="note-var"></p>
+    </article>
+
+  </section>
+
+  <!-- 历史记录 -->
+  <section class="history" aria-label="起卦历史">
+    <h2 class="sec-title">历史记录</h2>
+    <ul id="history-list" class="history-list"></ul>
+    <p id="history-empty" class="history-empty">暂无记录</p>
+  </section>
+
+  <footer class="site-foot">
+    <p>起卦规则：每次掷三枚硬币（正=3，反=2），合计 6/7/8/9 得
+    老阴/少阳/少阴/老阳；自下而上掷六次成卦；6、9 为动爻，动则变卦。</p>
+    <p>卦辞爻辞为《周易》通行本古籍原文（公版） · 数据构建 <code>tools/build_guaci.py</code></p>
+  </footer>
+
+</div>
+<script src="js/core.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
